@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "求职航线 · 预览版",
+  "version": "0.3.1",
+  "description": "本地简历资料库、网页辅助填报、岗位管理、面试复盘与简历附件留档。",
+  "icons": {
+    "16": "job-route-logo.png",
+    "32": "job-route-logo.png",
+    "48": "job-route-logo.png",
+    "128": "job-route-logo.png"
+  },
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_title": "打开求职航线主看板",
+    "default_icon": {
+      "16": "job-route-logo.png",
+      "32": "job-route-logo.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["ocr/*", "ocr/core/*", "ocr/lang/*", "sidebar-assistant.css", "job-route-logo.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

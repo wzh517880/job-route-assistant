@@ -1,0 +1,56 @@
+# 系统、编辑器与本地运行文件
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*.tmp
+*.log
+node_modules/
+coverage/
+.cache/
+
+# 凭证和本地配置
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+
+# 个人资料、备份、浏览器数据和调试输出应放在仓库之外
+backups/
+exports/
+imports/
+resumes/
+resume-files/
+personal-data/
+user-data/
+browser-profile/
+browser-data/
+screenshots/
+test-results/
+playwright-report/
+downloads/
+job-route-backup*.json
+job-route-backup*.zip
+jobRoute-backup*.json
+jobRoute-backup*.zip
+*备份*.json
+*备份*.zip
+*简历*.pdf
+*简历*.doc
+*简历*.docx
+*.sqlite
+*.sqlite3
+*.db
+*.crx
+*.zip
+
+# 网页上传文件不会可靠地应用本文件的排除规则，提交前仍须人工核对。

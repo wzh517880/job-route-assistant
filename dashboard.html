@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>求职航线</title>
+  <link rel="icon" type="image/png" href="job-route-logo.png">
+  <link rel="stylesheet" href="dashboard.css?v=20260915-v031">
+  <link rel="stylesheet" href="job-details.css?v=20260915-inline-company">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav">
+      <div class="brand">
+        <span class="brand-mark"><img src="job-route-logo.png" alt=""></span>
+        <div><strong>求职航线</strong><small>JOB ROUTE · PREVIEW</small></div>
+      </div>
+      <nav aria-label="主导航">
+        <button class="nav-item active" data-view="records"><span>⌁</span>投递航线</button>
+        <button class="nav-item" data-view="profile"><span>◇</span>简历资料库</button>
+        <button class="nav-item" data-view="safety"><span>◎</span>数据与备份</button>
+      </nav>
+      <div class="nav-note">
+        <span class="pulse"></span>
+        <div><strong>数据留在本机</strong><small>预览版不会上传简历信息</small></div>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div><p class="eyebrow">APPLICATION CONTROL ROOM</p><h1 id="pageTitle">今天有哪些面试需要处理？</h1></div>
+      </header>
+
+      <section class="view active" id="recordsView">
+        <div class="route-strip" id="routeStrip" aria-label="招聘流程"></div>
+
+        <div class="metrics" id="metrics"></div>
+
+        <div class="content-grid">
+          <section class="panel records-panel">
+            <div class="panel-head">
+              <div class="records-heading">
+                <div><p class="section-kicker">全部申请</p><h2>岗位清单 <small class="autosave-note">修改后自动保存</small></h2></div>
+                <button class="inline-add-btn" data-add-record>＋ 添加公司</button>
+              </div>
+              <div class="filters">
+                <input id="searchInput" type="search" placeholder="搜索岗位名称或投递岗位">
+                <select id="stageFilter"><option value="">全部阶段</option></select>
+                <button class="status-manage-btn" id="manageStatusesBtn" title="新增、排序或删除投递状态">管理状态</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>岗位名称</th><th>投递链接</th><th>投递岗位</th><th>投递状态</th><th>投递日期</th><th>当前状态 DDL</th><th></th></tr></thead>
+                <tbody id="recordsBody"></tbody>
+              </table>
+              <div class="empty-state hidden" id="recordsEmpty">
+                <span>⌁</span><h3>航线还是空的</h3><p>新增第一条岗位，开始记录投递进度。</p>
+                <button class="secondary-btn" data-add-record>新增第一条岗位</button>
+              </div>
+            </div>
+            <div class="table-add-bar">
+              <button data-add-record>＋ 新增一行</button>
+              <span>添加后可直接编辑公司、岗位、状态和日期，修改会自动保存</span>
+            </div>
+          </section>
+
+          <aside class="panel next-panel">
+            <div class="panel-head upcoming-head">
+              <div><p class="section-kicker">NEXT MOVES</p><h2>投递进度提醒</h2></div>
+              <select class="upcoming-filter" id="upcomingStageFilter" aria-label="筛选提醒状态">
+                <option value="__action__">需要处理</option>
+              </select>
+            </div>
+            <div id="upcomingList" class="upcoming-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="profileView">
+        <div class="resume-version-bar">
+          <div class="resume-version-fields">
+            <div class="resume-version-field resume-version-composer">
+              <p class="section-kicker">简历版本名称 <span>可直接编辑</span></p>
+              <div class="resume-version-picker" id="resumeVersionPicker">
+                <div class="resume-version-combined">
+                  <input class="resume-title-input" id="resumeTitleInput" value="通用简历" maxlength="30" aria-label="编辑当前简历版本名称">
+                  <button class="resume-version-trigger" id="resumeVersionTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="resumeVersionMenu" aria-label="切换其他简历版本">
+                    <span class="visually-hidden" id="resumeVersionTriggerLabel">通用简历</span><strong>切换版本</strong><i aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="resume-version-menu hidden" id="resumeVersionMenu" role="listbox" aria-label="选择岗位简历版本"></div>
+                <select id="resumeVersionSelect" aria-label="选择岗位简历" tabindex="-1"></select>
+              </div>
+              <div class="resume-version-actions"><button class="secondary-btn" id="newResumeVersionBtn">＋ 新建岗位版本</button><button class="text-danger-btn" id="deleteResumeVersionBtn">删除当前版本</button></div>
+              <small class="resume-version-help">修改名称后自动保存；点击右侧按钮切换其他版本，并同步到网页侧边助手</small>
+            </div>
+          </div>
+        </div>
+        <div class="profile-intro">
+          <div><h2>把简历内容整理成可复用资料</h2><p>上传 PDF 或手动填写一次，保存后即可在招聘网页侧边助手中快速复用。自动解析可能出现误读，请逐项检查后再用于投递。</p></div>
+          <div class="profile-actions"><label class="secondary-btn file-action">上传并解析 PDF<input id="resumePdfFile" type="file" accept="application/pdf,.pdf" hidden></label><button class="primary-btn" id="saveProfileBtn">保存当前版本</button></div>
+        </div>
+        <div class="pdf-review-notice hidden" id="pdfReviewNotice" role="alert"><div><strong>PDF 已解析为可编辑草稿</strong><span>自动识别可能出现字段错位、遗漏或断行，请逐项检查后再用于投递。</span></div><button id="confirmPdfReviewBtn">我已检查</button></div>
+        <div id="profileEditor" class="profile-editor"></div>
+      </section>
+
+      <section class="view" id="safetyView">
+        <div class="safety-hero">
+          <div class="safety-orbit">LOCAL<span>ONLY</span></div>
+          <div><p class="section-kicker">DATA SAFETY</p><h2>你的求职资料，仅在本地。</h2><p>数据默认保存在当前浏览器中；版本更新或重装浏览器前，请及时导出 JSON 文件备份。</p></div>
+        </div>
+        <div class="safety-grid">
+          <article class="panel action-card"><span>01</span><h3>完整备份</h3><p>导出简历资料与全部投递记录。</p><button class="secondary-btn" id="exportBtn">导出 JSON</button></article>
+          <article class="panel action-card"><span>02</span><h3>恢复数据</h3><p>从此前导出的文件恢复当前工作台。</p><button class="secondary-btn" id="importBtn">导入 JSON</button><input id="importFile" type="file" accept="application/json,.json" hidden></article>
+          <article class="panel action-card danger"><span>03</span><h3>清空本机数据</h3><p>删除简历资料和投递记录，操作不可撤销。</p><button class="danger-btn" id="clearBtn">清空全部数据</button></article>
+        </div>
+        <div class="panel ocr-card">
+          <div><p class="section-kicker">OFFLINE OCR</p><h2>从通知截图建立记录</h2><p>上传邮件、微信或投递成功截图，本地识别文字后由你确认。</p></div>
+          <button class="primary-btn" id="openOcrBtn">上传截图识别</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="deadline-picker" id="deadlinePicker" role="dialog" aria-label="选择当前状态 DDL" hidden>
+    <div class="deadline-picker-head">
+      <button type="button" data-deadline-nav="-1" aria-label="上个月">‹</button>
+      <strong id="deadlineMonthLabel"></strong>
+      <button type="button" data-deadline-nav="1" aria-label="下个月">›</button>
+    </div>
+    <div class="deadline-weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+    <div class="deadline-calendar" id="deadlineCalendar"></div>
+    <div class="deadline-time-row">
+      <span>截止时间</span>
+      <label><select id="deadlineHour" aria-label="小时"></select><small>时</small></label>
+      <label><select id="deadlineMinute" aria-label="分钟"></select><small>分</small></label>
+    </div>
+    <div class="deadline-picker-actions">
+      <button class="deadline-clear" type="button" data-deadline-clear>清除</button>
+      <button class="deadline-confirm" type="button" data-deadline-confirm>确定</button>
+    </div>
+  </div>
+
+  <dialog id="recordDialog">
+    <form method="dialog" id="recordForm">
+      <div class="dialog-head"><div><p class="section-kicker">APPLICATION</p><h2 id="recordDialogTitle">新增岗位</h2></div><button class="icon-btn" type="button" data-close-record aria-label="关闭">×</button></div>
+      <input id="recordId" type="hidden">
+      <div class="form-grid">
+        <label>岗位名称<input id="companyInput" required placeholder="例如：腾讯 2027 校园招聘"></label>
+        <label>岗位<input id="positionInput" required></label>
+        <label>投递日期<input id="dateInput" type="date"></label>
+        <label>投递状态<select id="recordStage"></select></label>
+        <label>当前状态 DDL<input id="scheduleInput" type="datetime-local"></label>
+        <label class="wide">投递链接<input id="urlInput" type="url"></label>
+        <label class="wide">备注<textarea id="notesInput" rows="3"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-record>取消</button><button class="primary-btn" id="saveRecordBtn" type="submit">保存投递</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="ocrDialog">
+    <form method="dialog" id="ocrForm">
+      <div class="dialog-head"><div><p class="section-kicker">OFFLINE OCR</p><h2>识别通知截图</h2></div><button class="icon-btn" value="cancel" aria-label="关闭">×</button></div>
+      <label class="dropzone" id="dropzone"><input id="ocrFile" type="file" accept="image/*" hidden><img id="ocrPreview" class="hidden" alt="截图预览"><span id="dropPrompt">拖入截图，或点击选择图片</span></label>
+      <div class="ocr-progress hidden" id="ocrProgress"><i id="ocrProgressBar"></i><span id="ocrStatus">正在准备识别…</span></div>
+      <textarea id="ocrRawText" class="hidden" rows="7" placeholder="识别出的文字"></textarea>
+      <div class="dialog-actions"><button class="secondary-btn" value="cancel">关闭</button><button class="primary-btn" type="button" id="runOcrBtn" disabled>开始本地识别</button><button class="primary-btn hidden" type="button" id="ocrToRecordBtn">带入投递表单</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="statusDialog" class="compact-dialog">
+    <form method="dialog" id="statusForm">
+      <div class="dialog-head"><div><p class="section-kicker">WORKFLOW SETTINGS</p><h2>管理投递状态</h2></div><button class="icon-btn" type="button" data-close-status aria-label="关闭">×</button></div>
+      <p class="dialog-help" id="statusSortHint" role="status">拖动左侧手柄调整顺序，也可点击 ↑ ↓；修改自动保存，并同步到所有状态选项。</p>
+      <div class="status-editor-list" id="statusEditorList"></div>
+      <div class="status-add-row">
+        <input id="newStatusInput" maxlength="12" placeholder="输入新的状态名称">
+        <button class="primary-btn" type="button" id="addStatusBtn">添加状态</button>
+      </div>
+      <div class="dialog-actions"><button class="secondary-btn" type="button" id="resetStatusesBtn">恢复默认状态</button><button class="primary-btn" type="button" data-close-status>完成</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="resumeVersionDialog" class="compact-dialog">
+    <form method="dialog" id="resumeVersionForm">
+      <div class="dialog-head"><div><p class="section-kicker">NEW RESUME VERSION</p><h2>新建岗位简历</h2></div><button class="icon-btn" type="button" data-close-resume-version aria-label="关闭">×</button></div>
+      <p class="dialog-help">将复制当前版本的基本信息和经历，你可以再针对目标岗位单独修改。</p>
+      <label class="dialog-field">岗位简历名称<input id="newResumeTitleInput" required maxlength="30" placeholder="例如：用户研究岗位简历"></label>
+      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-resume-version>取消</button><button class="primary-btn" type="submit">创建版本</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="reuseModuleDialog" class="compact-dialog">
+    <form method="dialog" id="reuseModuleForm">
+      <div class="dialog-head"><div><p class="section-kicker">REUSE FROM VERSION</p><h2 id="reuseModuleTitle">沿用其他版本</h2></div><button class="icon-btn" type="button" data-close-reuse aria-label="关闭">×</button></div>
+      <p class="dialog-help">选择一个来源版本。确认后只替换当前模块，不影响这份简历的其他内容。</p>
+      <label class="dialog-field">来源简历版本<select id="reuseSourceSelect"></select></label>
+      <div class="reuse-preview" id="reuseModulePreview"></div>
+      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-reuse>取消</button><button class="danger-confirm-btn" type="submit">覆盖并沿用</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="ocr/tesseract.min.js"></script>
+  <script src="resume-files.js?v=1"></script>
+  <script src="job-details.js?v=3"></script>
+  <script src="dashboard.js?v=20260915-inline-company"></script>
+  <script type="module" src="pdf-parser.js?v=20260914-1"></script>
+</body>
+</html>
