@@ -6,7 +6,7 @@
 
 新用户请先阅读 **[下载与安装教程](USER_GUIDE.md)**，包含 Windows / Mac、Chrome / Edge 的安装步骤，以及“清单文件丢失”等常见问题的处理方法。
 
-快捷步骤：**Code → Download ZIP → 完整解压 → 打开浏览器扩展管理页 → 开启开发者模式 → 加载直接包含 `manifest.json` 的文件夹**。旧版更新前先备份，详见 [INSTALL.md](INSTALL.md)。
+快捷步骤：**开启开发者模式 → 加载未打包 / 已解压的扩展程序 → 选择解压后的 job-route-assistant 文件夹**（从 GitHub 下载后通常名为 `job-route-assistant-main`，请选择里面直接包含 `manifest.json` 的那一层）。旧版更新前先备份，详见 [INSTALL.md](INSTALL.md)。
 
 ## 当前功能
 
